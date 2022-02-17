@@ -15,3 +15,6 @@ class ClientService:
     def client(self, cpf: int):
         return self._clientRepository.client(cpf)
 
+    def update(self, client: Client):
+        return self._clientRepository.update(client)
+

@@ -17,3 +17,10 @@ class ClientRepository:
                 return client
         raise ValueError("Cliente não encontrado.")
 
+    def update(self, client: Client):
+        for item in self._clients:
+            if item["CPF"] == client.getCPF():
+                item["Name"] = client.getName()
+                return "Cliente atualizado com sucesso."
+        raise ValueError("Cliente não encontrado.")
+
