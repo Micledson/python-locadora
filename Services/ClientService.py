@@ -8,3 +8,10 @@ class ClientService:
 
     def save(self, client: Client):
         self._clientRepository.save(client)
+
+    def clients(self):
+        return self._clientRepository.clients()
+
+    def client(self, cpf: int):
+        return self._clientRepository.client(cpf)
+

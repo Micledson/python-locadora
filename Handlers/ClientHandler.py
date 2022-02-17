@@ -14,3 +14,16 @@ class ClientHandler:
 
         self._clientService.save(_client)
 
+    def clients(self):
+        clients = self._clientService.clients()
+        for client in clients:
+            print("Cliente: {} CPF: {}".format(client["Name"], client["CPF"]))
+
+    def client(self):
+        cpf = int(input("Digite os números do CPF: "))
+        try:
+            client = self._clientService.client(cpf)
+            print("Cliente: {} CPF: {}".format(client["Name"], client["CPF"]))
+        except ValueError as err:
+            print(err)
+
