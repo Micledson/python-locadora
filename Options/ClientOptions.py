@@ -8,7 +8,7 @@ class ClientOptions:
         self._options()
 
     def _options(self):
-        print("1 - Criar Cliente\n2 - Exibir Clientes\n3 - Buscar Cliente\n4 - Atualizar Cliente")
+        print("1 - Criar Cliente\n2 - Exibir Clientes\n3 - Buscar Cliente\n4 - Atualizar Cliente\n5 - Deletar Cliente")
         choice = int(input())
 
         if choice == 1:
@@ -19,3 +19,5 @@ class ClientOptions:
             self._clientHandler.client()
         elif choice == 4:
             self._clientHandler.update()
+        elif choice == 5:
+            self._clientHandler.delete()

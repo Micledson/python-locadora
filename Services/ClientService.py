@@ -18,3 +18,5 @@ class ClientService:
     def update(self, client: Client):
         return self._clientRepository.update(client)
 
+    def delete(self, cpf: int):
+        return self._clientRepository.delete(cpf)

@@ -24,3 +24,9 @@ class ClientRepository:
                 return "Cliente atualizado com sucesso."
         raise ValueError("Cliente não encontrado.")
 
+    def delete(self, cpf: int):
+        for index in range(len(self._clients)):
+            if self._clients[index]["CPF"] == cpf:
+                self._clients.pop(index)
+                return "Cliente deletado."
+        raise ValueError("Cliente não encontrado.")

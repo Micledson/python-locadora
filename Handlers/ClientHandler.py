@@ -38,3 +38,10 @@ class ClientHandler:
         except ValueError as err:
             print(err)
 
+    def delete(self):
+        cpf = int(input("Digite os números do CPF: "))
+
+        try:
+            print(self._clientService.delete(cpf))
+        except ValueError as err:
+            print(err)
