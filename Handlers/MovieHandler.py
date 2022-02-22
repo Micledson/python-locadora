@@ -51,3 +51,11 @@ class MovieHandler:
             print(self._movieService.delete(cod))
         except ValueError as err:
             print(err)
+
+    def alugar(self):
+        cod = int(input("Digite o código do filme: "))
+
+        try:
+            self._movieService.alugar(cod)
+        except ValueError as err:
+            print(err)

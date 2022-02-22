@@ -17,6 +17,9 @@ class MovieService:
 
     def update(self, movie: Movie):
         return self._movieRepository.update(movie)
-    #
+
     def delete(self, cod: int):
         return self._movieRepository.delete(cod)
+
+    def alugar(self, cod: int):
+        return self._movieRepository.alugar(cod)

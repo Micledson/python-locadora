@@ -6,6 +6,7 @@ class MovieRepository:
 
     def __init__(self):
         self._jsonPath = "/Data/MovieData.json"
+        self._reportPath = "/Data/relatorio.json"
         self._jsonManager = JsonManager()
 
     def save(self, movie: Movie):
@@ -45,4 +46,24 @@ class MovieRepository:
                 movies.pop(index)
                 self._jsonManager.update(self._jsonPath, movies)
                 return "Filme deletado."
+        raise ValueError("Filme não encontrado.")
+
+    def alugar(self, cod: int):
+        movies: Movie = self._jsonManager.open(self._jsonPath)
+        for movie in movies:
+            if movie["COD"] == cod:
+                movie["Quantity"] -= 1
+                self._jsonManager.update(self._jsonPath, movies)
+                reports = self._jsonManager.open(self._reportPath)
+
+                for report in reports:
+                    if report["COD"] == cod:
+                        report["Quantity"] += 1
+                        self._jsonManager.update(self._reportPath, reports)
+                        return movie
+
+                reports.append({"Name": movie["Name"], "COD": movie["COD"],
+                                "Price": movie["Price"], "Quantity": 1})
+                self._jsonManager.update(self._reportPath, reports)
+                return movies
         raise ValueError("Filme não encontrado.")

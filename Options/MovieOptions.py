@@ -8,7 +8,7 @@ class MovieOptions:
         self._options()
 
     def _options(self):
-        print("1 - Criar Filme\n2 - Exibir Filmes\n3 - Buscar Filme\n4 - Atualizar Filme\n5 - Deletar Filme")
+        print("1 - Criar Filme\n2 - Exibir Filmes\n3 - Buscar Filme\n4 - Atualizar Filme\n5 - Deletar Filme\n6 - Alugar Filme")
         choice = int(input())
 
         if choice == 1:
@@ -21,3 +21,5 @@ class MovieOptions:
             self._movieHandler.update()
         elif choice == 5:
             self._movieHandler.delete()
+        elif choice == 6:
+            self._movieHandler.alugar()
