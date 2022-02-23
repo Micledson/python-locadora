@@ -1,5 +1,6 @@
 from Domain.Movie import Movie
 from Repository.MovieRepository import MovieRepository
+from Services.ClientService import ClientService
 
 
 class MovieService:
@@ -21,5 +22,30 @@ class MovieService:
     def delete(self, cod: int):
         return self._movieRepository.delete(cod)
 
-    def alugar(self, cod: int):
-        return self._movieRepository.alugar(cod)
+    def alugar(self, cpf: int, cod: int, quantity: int):
+
+        try:
+            clientService = ClientService()
+            client = clientService.client(cpf)
+            movie = self.movie(cod)
+            if movie["Quantity"] >= quantity:
+                return self._movieRepository.alugar(cpf, cod, quantity)
+            else:
+                print("Não temos tantas cópias disponíveis")
+        except ValueError as err:
+            print(err)
+
+    def devolver(self, cpf: int, cod: int, quantity: int):
+        try:
+            clientService = ClientService()
+            client = clientService.client(cpf)
+            movie = self.movie(cod)
+            if movie["Quantity"] <= quantity:
+                return self._movieRepository.devolver(cpf, cod, quantity)
+            else:
+                print("Você está tentando devolver mais cópias que o necessário")
+        except ValueError as err:
+            print(err)
+
+    def currentlyRentedMovies(self):
+        return self._movieRepository.currentlyRentedMovies()

@@ -53,9 +53,29 @@ class MovieHandler:
             print(err)
 
     def alugar(self):
+        # rent
+        cpf = int(input("Digite os números do CPF: "))
         cod = int(input("Digite o código do filme: "))
+        quantity = int(input("Digite quantas cópias vai alugar: "))
 
         try:
-            self._movieService.alugar(cod)
+            self._movieService.alugar(cpf, cod, quantity)
         except ValueError as err:
             print(err)
+
+    def devolver(self):
+
+        cpf = int(input("Digite os números do CPF: "))
+        cod = int(input("Digite o código do filme: "))
+        quantity = int(input("Digite quantas cópias vai alugar: "))
+
+        try:
+            self._movieService.devolver(cpf, cod, quantity)
+        except ValueError as err:
+            print(err)
+
+    def currentlyRentedMovies(self):
+        movies = self._movieService.currentlyRentedMovies()
+        for movie in movies:
+            print("Filme: {} COD: {} Preço: {} Quantidade: {} Cliente: {}"
+                  .format(movie["Name"], movie["COD"], movie["Price"], movie["Quantity"], movie["Client"]))

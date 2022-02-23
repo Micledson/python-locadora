@@ -1,4 +1,5 @@
 from Domain.Movie import Movie
+from Repository.CashRepostitory import CashRepository
 from Utils.JsonManager import JsonManager
 
 
@@ -6,7 +7,7 @@ class MovieRepository:
 
     def __init__(self):
         self._jsonPath = "/Data/MovieData.json"
-        self._reportPath = "/Data/relatorio.json"
+        self._reportPath = "/Data/Report.json"
         self._jsonManager = JsonManager()
 
     def save(self, movie: Movie):
@@ -15,7 +16,7 @@ class MovieRepository:
                        "Price": movie.getPrice(), "Quantity": movie.getQuantity()})
         self._jsonManager.update(self._jsonPath, movies)
 
-        print("Cliente cadastrado com sucesso.")
+        print("Filme cadastrado com sucesso.")
 
     def movies(self):
         movies = self._jsonManager.open(self._jsonPath)
@@ -48,22 +49,51 @@ class MovieRepository:
                 return "Filme deletado."
         raise ValueError("Filme não encontrado.")
 
-    def alugar(self, cod: int):
+    def alugar(self, cpf: int, cod: int, quantity: int):
         movies: Movie = self._jsonManager.open(self._jsonPath)
+        cashRepository = CashRepository()
+
         for movie in movies:
             if movie["COD"] == cod:
-                movie["Quantity"] -= 1
+                movie["Quantity"] -= quantity
                 self._jsonManager.update(self._jsonPath, movies)
                 reports = self._jsonManager.open(self._reportPath)
 
                 for report in reports:
-                    if report["COD"] == cod:
-                        report["Quantity"] += 1
+                    if report["COD"] == cod and report["Client"] == cpf:
+                        report["Quantity"] += quantity
+                        cashRepository.save(movie["Price"], quantity)
+
                         self._jsonManager.update(self._reportPath, reports)
                         return movie
 
-                reports.append({"Name": movie["Name"], "COD": movie["COD"],
-                                "Price": movie["Price"], "Quantity": 1})
+                reports.append({"Name": movie["Name"], "COD": movie["COD"], "Client": cpf,
+                                "Price": movie["Price"], "Quantity": quantity})
                 self._jsonManager.update(self._reportPath, reports)
+
+                cashRepository.save(movie["Price"], quantity)
+
                 return movies
         raise ValueError("Filme não encontrado.")
+
+    def devolver(self, cpf: int, cod: int, quantity: int):
+        movies: Movie = self._jsonManager.open(self._jsonPath)
+        for movie in movies:
+            if movie["COD"] == cod:
+
+                reports = self._jsonManager.open(self._reportPath)
+
+                for report in reports:
+                    if report["COD"] == cod and report["Client"] == cpf:
+                        movie["Quantity"] += quantity
+                        self._jsonManager.update(self._jsonPath, movies)
+
+                        report["Quantity"] -= quantity
+                        self._jsonManager.update(self._reportPath, reports)
+                        return movie
+
+                return movies
+        raise ValueError("Filme não encontrado.")
+
+    def currentlyRentedMovies(self):
+        return self._jsonManager.open(self._reportPath)

@@ -4,7 +4,7 @@ import os
 
 class JsonManager:
 
-    def open(self, filePath: str):
+    def open(self, filePath: str, data=[]):
         path = os.getcwd() + filePath
 
         isExists = os.path.isfile(path)
@@ -15,7 +15,7 @@ class JsonManager:
                 file.close()
                 return data
         else:
-            return self._createJson(path)
+            return self._createJson(path, data)
 
     def update(self, filePath: str, data):
         path = os.getcwd() + filePath
@@ -29,8 +29,8 @@ class JsonManager:
         else:
             self._createJson(path)
 
-    def _createJson(self, filePath: str):
+    def _createJson(self, filePath: str, data=[]):
         with open(filePath, 'w') as file:
-            json.dump([], file, indent=2, separators=(',', ': '))
+            json.dump(data, file, indent=2, separators=(',', ': '))
             file.close()
-            return []
+            return data
